@@ -34,7 +34,11 @@ export function Navbar() {
               <Link to="/mis-pedidos" className="text-gray-700 hover:text-brand">
                 Mis pedidos
               </Link>
-              <span className="text-gray-500">{usuario.full_name}</span>
+              {usuario.role === 'admin' && (
+                <span className="rounded-full bg-brand/10 px-2 py-0.5 text-xs font-semibold text-brand">
+                  Admin
+                </span>
+              )}
               <button
                 type="button"
                 onClick={handleLogout}

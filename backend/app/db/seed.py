@@ -15,7 +15,7 @@ def seed_admin() -> None:
         uow.usuarios.add(
             Usuario(
                 username="admin",
-                full_name="Administrador",
+                full_name="Gabriel Lovera",
                 email="admin@foodstore.com",
                 hashed_password=hash_password("Admin1234!"),
                 role="admin",
@@ -36,18 +36,18 @@ def seed_categorias() -> dict[str, int]:
 
 def seed_productos(categoria_ids: dict[str, int]) -> None:
     productos = [
-        ("Pizza Muzzarella", "Pizzas", 8500.0, 20),
-        ("Pizza Napolitana", "Pizzas", 9200.0, 15),
-        ("Pizza Fugazzeta", "Pizzas", 9500.0, 10),
-        ("Hamburguesa Clasica", "Hamburguesas", 6500.0, 25),
-        ("Hamburguesa Doble Cheddar", "Hamburguesas", 7800.0, 18),
-        ("Hamburguesa Veggie", "Hamburguesas", 7200.0, 12),
-        ("Gaseosa 500ml", "Bebidas", 1500.0, 50),
-        ("Agua Mineral 500ml", "Bebidas", 1000.0, 50),
+        ("Pizza Muzzarella", "Pizzas", 8500.0, 20, "pizza-muzzarella.jpg"),
+        ("Pizza Napolitana", "Pizzas", 9200.0, 15, "pizza-napolitana.jpg"),
+        ("Pizza Fugazzeta", "Pizzas", 9500.0, 10, "pizza-fugazzeta.jpg"),
+        ("Hamburguesa Clasica", "Hamburguesas", 6500.0, 25, "hamburguesa-clasica.jpg"),
+        ("Hamburguesa Doble Cheddar", "Hamburguesas", 7800.0, 18, "hamburguesa-doble-cheddar.jpg"),
+        ("Hamburguesa Veggie", "Hamburguesas", 7200.0, 12, "hamburguesa-veggie.jpg"),
+        ("Gaseosa 500ml", "Bebidas", 1500.0, 50, "gaseosa-500ml.jpg"),
+        ("Agua Mineral 500ml", "Bebidas", 1000.0, 50, "agua-mineral-500ml.jpg"),
     ]
     with ProductoUnitOfWork() as uow:
         existentes = {producto.nombre for producto in uow.productos.get_all()}
-        for nombre, categoria_nombre, precio, stock in productos:
+        for nombre, categoria_nombre, precio, stock, imagen in productos:
             if nombre in existentes:
                 continue
             uow.productos.add(
@@ -56,6 +56,7 @@ def seed_productos(categoria_ids: dict[str, int]) -> None:
                     categoria_id=categoria_ids[categoria_nombre],
                     precio_base=precio,
                     stock=stock,
+                    imagen_url=f"/images/productos/{imagen}",
                 )
             )
 

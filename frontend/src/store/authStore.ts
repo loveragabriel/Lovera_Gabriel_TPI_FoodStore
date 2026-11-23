@@ -7,7 +7,7 @@ import type { Usuario } from '@/features/auth/types/auth.types'
 interface AuthState {
   usuario: Usuario | null
   cargando: boolean
-  login: (username: string, password: string) => Promise<void>
+  login: (username: string, password: string) => Promise<Usuario>
   logout: () => Promise<void>
   checkSession: () => Promise<void>
 }
@@ -20,7 +20,9 @@ export const useAuthStore = create<AuthState>()(
 
       login: async (username, password) => {
         await loginRequest(username, password)
-        set({ usuario: await me() })
+        const usuario = await me()
+        set({ usuario })
+        return usuario
       },
 
       logout: async () => {

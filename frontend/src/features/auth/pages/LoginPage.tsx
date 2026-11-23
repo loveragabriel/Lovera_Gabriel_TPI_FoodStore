@@ -17,15 +17,16 @@ export function LoginPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const [error, setError] = useState<string | null>(null)
-  const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname ?? '/'
+  const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname
 
   const form = useForm({
     defaultValues: { username: '', password: '' } as LoginFormValues,
     onSubmit: async ({ value }) => {
       setError(null)
       try {
-        await login(value.username, value.password)
-        navigate(from, { replace: true })
+        const usuario = await login(value.username, value.password)
+        const destino = from ?? (usuario.role === 'admin' ? '/admin/resumen' : '/')
+        navigate(destino, { replace: true })
       } catch (e) {
         const detail =
           (e as { response?: { data?: { detail?: string } } }).response?.data?.detail ?? 'No se pudo iniciar sesion'

@@ -6,6 +6,7 @@ import { Paginacion } from '@/shared/components/Paginacion'
 import { Skeleton } from '@/shared/components/Skeleton'
 import { BadgeEstado } from '@/shared/ui/BadgeEstado'
 import { Button } from '@/shared/ui/Button'
+import { Select } from '@/shared/ui/Select'
 
 import { useCambiarEstadoPedido } from '../hooks/useCambiarEstadoPedido'
 import { usePedidos } from '../hooks/usePedidos'
@@ -36,20 +37,19 @@ export function AdminPedidosPage() {
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-gray-900">Pedidos</h1>
 
-      <select
+      <Select
         value={estado}
         onChange={(e) => {
           setEstado(e.target.value)
           setPagina(1)
         }}
-        className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-2 focus:outline-brand"
       >
         <option value="">Todos los estados</option>
         <option value="PENDIENTE">Pendiente</option>
         <option value="EN_PREPARACION">En preparacion</option>
         <option value="ENTREGADO">Entregado</option>
         <option value="CANCELADO">Cancelado</option>
-      </select>
+      </Select>
 
       {isLoading && <Skeleton count={5} className="h-16" />}
       {!isLoading && isError && <EstadoError onRetry={() => refetch()} />}

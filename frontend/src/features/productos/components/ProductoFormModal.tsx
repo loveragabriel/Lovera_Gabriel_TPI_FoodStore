@@ -4,7 +4,10 @@ import { useState } from 'react'
 import { useCategorias } from '@/features/categorias/hooks/useCategorias'
 import { handleApiError } from '@/shared/api/handleApiError'
 import { Button } from '@/shared/ui/Button'
+import { Input } from '@/shared/ui/Input'
 import { Modal } from '@/shared/ui/Modal'
+import { Select } from '@/shared/ui/Select'
+import { Textarea } from '@/shared/ui/Textarea'
 
 import type { Producto, ProductoInput } from '../types/producto.types'
 
@@ -57,62 +60,43 @@ export function ProductoFormModal({ open, producto, onClose, onSubmit }: Product
           }}
         >
           {(field) => (
-            <div className="flex flex-col gap-1">
-              <label htmlFor={field.name} className="text-sm font-medium text-gray-700">
-                Nombre
-              </label>
-              <input
-                id={field.name}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-                className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-2 focus:outline-brand"
-              />
-              {field.state.meta.errors.map((err) => (
-                <p key={String(err)} className="text-xs text-error">
-                  {String(err)}
-                </p>
-              ))}
-            </div>
+            <Input
+              id={field.name}
+              label="Nombre"
+              value={field.state.value}
+              onBlur={field.handleBlur}
+              onChange={(e) => field.handleChange(e.target.value)}
+              error={field.state.meta.errors[0] ? String(field.state.meta.errors[0]) : undefined}
+            />
           )}
         </form.Field>
 
         <form.Field name="descripcion">
           {(field) => (
-            <div className="flex flex-col gap-1">
-              <label htmlFor={field.name} className="text-sm font-medium text-gray-700">
-                Descripcion
-              </label>
-              <textarea
-                id={field.name}
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                rows={2}
-                className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-2 focus:outline-brand"
-              />
-            </div>
+            <Textarea
+              id={field.name}
+              label="Descripcion"
+              value={field.state.value}
+              onChange={(e) => field.handleChange(e.target.value)}
+              rows={2}
+            />
           )}
         </form.Field>
 
         <form.Field name="categoria_id">
           {(field) => (
-            <div className="flex flex-col gap-1">
-              <label htmlFor={field.name} className="text-sm font-medium text-gray-700">
-                Categoria
-              </label>
-              <select
-                id={field.name}
-                value={field.state.value}
-                onChange={(e) => field.handleChange(Number(e.target.value))}
-                className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-2 focus:outline-brand"
-              >
-                {categorias?.map((categoria) => (
-                  <option key={categoria.id} value={categoria.id}>
-                    {categoria.nombre}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <Select
+              id={field.name}
+              label="Categoria"
+              value={field.state.value}
+              onChange={(e) => field.handleChange(Number(e.target.value))}
+            >
+              {categorias?.map((categoria) => (
+                <option key={categoria.id} value={categoria.id}>
+                  {categoria.nombre}
+                </option>
+              ))}
+            </Select>
           )}
         </form.Field>
 
@@ -124,26 +108,17 @@ export function ProductoFormModal({ open, producto, onClose, onSubmit }: Product
             }}
           >
             {(field) => (
-              <div className="flex flex-col gap-1">
-                <label htmlFor={field.name} className="text-sm font-medium text-gray-700">
-                  Precio base
-                </label>
-                <input
-                  id={field.name}
-                  type="number"
-                  min={0}
-                  step="0.01"
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(Number(e.target.value))}
-                  className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-2 focus:outline-brand"
-                />
-                {field.state.meta.errors.map((err) => (
-                  <p key={String(err)} className="text-xs text-error">
-                    {String(err)}
-                  </p>
-                ))}
-              </div>
+              <Input
+                id={field.name}
+                label="Precio base"
+                type="number"
+                min={0}
+                step="0.01"
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={(e) => field.handleChange(Number(e.target.value))}
+                error={field.state.meta.errors[0] ? String(field.state.meta.errors[0]) : undefined}
+              />
             )}
           </form.Field>
 
@@ -154,43 +129,29 @@ export function ProductoFormModal({ open, producto, onClose, onSubmit }: Product
             }}
           >
             {(field) => (
-              <div className="flex flex-col gap-1">
-                <label htmlFor={field.name} className="text-sm font-medium text-gray-700">
-                  Stock
-                </label>
-                <input
-                  id={field.name}
-                  type="number"
-                  min={0}
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(Number(e.target.value))}
-                  className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-2 focus:outline-brand"
-                />
-                {field.state.meta.errors.map((err) => (
-                  <p key={String(err)} className="text-xs text-error">
-                    {String(err)}
-                  </p>
-                ))}
-              </div>
+              <Input
+                id={field.name}
+                label="Stock"
+                type="number"
+                min={0}
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={(e) => field.handleChange(Number(e.target.value))}
+                error={field.state.meta.errors[0] ? String(field.state.meta.errors[0]) : undefined}
+              />
             )}
           </form.Field>
         </div>
 
         <form.Field name="imagen_url">
           {(field) => (
-            <div className="flex flex-col gap-1">
-              <label htmlFor={field.name} className="text-sm font-medium text-gray-700">
-                URL de imagen
-              </label>
-              <input
-                id={field.name}
-                type="url"
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-2 focus:outline-brand"
-              />
-            </div>
+            <Input
+              id={field.name}
+              label="URL de imagen"
+              type="url"
+              value={field.state.value}
+              onChange={(e) => field.handleChange(e.target.value)}
+            />
           )}
         </form.Field>
 

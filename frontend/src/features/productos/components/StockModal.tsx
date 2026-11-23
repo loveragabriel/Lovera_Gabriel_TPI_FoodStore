@@ -3,6 +3,7 @@ import { useState } from 'react'
 
 import { handleApiError } from '@/shared/api/handleApiError'
 import { Button } from '@/shared/ui/Button'
+import { Input } from '@/shared/ui/Input'
 import { Modal } from '@/shared/ui/Modal'
 
 import type { Producto, StockInput } from '../types/producto.types'
@@ -50,25 +51,16 @@ export function StockModal({ open, producto, onClose, onSubmit }: StockModalProp
           }}
         >
           {(field) => (
-            <div className="flex flex-col gap-1">
-              <label htmlFor={field.name} className="text-sm font-medium text-gray-700">
-                Stock
-              </label>
-              <input
-                id={field.name}
-                type="number"
-                min={0}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(Number(e.target.value))}
-                className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-2 focus:outline-brand"
-              />
-              {field.state.meta.errors.map((err) => (
-                <p key={String(err)} className="text-xs text-error">
-                  {String(err)}
-                </p>
-              ))}
-            </div>
+            <Input
+              id={field.name}
+              label="Stock"
+              type="number"
+              min={0}
+              value={field.state.value}
+              onBlur={field.handleBlur}
+              onChange={(e) => field.handleChange(Number(e.target.value))}
+              error={field.state.meta.errors[0] ? String(field.state.meta.errors[0]) : undefined}
+            />
           )}
         </form.Field>
 

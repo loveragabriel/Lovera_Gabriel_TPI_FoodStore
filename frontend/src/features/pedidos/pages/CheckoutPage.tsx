@@ -4,6 +4,10 @@ import { useNavigate } from 'react-router-dom'
 
 import { handleApiError } from '@/shared/api/handleApiError'
 import { Button } from '@/shared/ui/Button'
+import { Card } from '@/shared/ui/Card'
+import { Input } from '@/shared/ui/Input'
+import { Select } from '@/shared/ui/Select'
+import { Textarea } from '@/shared/ui/Textarea'
 import { useCartStore } from '@/store/cartStore'
 
 import { useCrearPedido } from '../hooks/useCrearPedido'
@@ -56,90 +60,73 @@ export function CheckoutPage() {
     <div className="mx-auto max-w-lg space-y-6">
       <h1 className="text-2xl font-bold text-gray-900">Confirmar pedido</h1>
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          form.handleSubmit()
-        }}
-        className="flex flex-col gap-4 rounded-xl border border-gray-200 bg-white p-6"
-      >
-        <form.Field
-          name="direccion_entrega"
-          validators={{
-            onBlur: ({ value }) =>
-              value.trim().length < 5 || value.trim().length > 200
-                ? 'La direccion debe tener entre 5 y 200 caracteres'
-                : undefined,
+      <Card>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            form.handleSubmit()
           }}
+          className="flex flex-col gap-4"
         >
-          {(field) => (
-            <div className="flex flex-col gap-1">
-              <label htmlFor={field.name} className="text-sm font-medium text-gray-700">
-                Direccion de entrega
-              </label>
-              <input
+          <form.Field
+            name="direccion_entrega"
+            validators={{
+              onBlur: ({ value }) =>
+                value.trim().length < 5 || value.trim().length > 200
+                  ? 'La direccion debe tener entre 5 y 200 caracteres'
+                  : undefined,
+            }}
+          >
+            {(field) => (
+              <Input
                 id={field.name}
+                label="Direccion de entrega"
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
-                className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-2 focus:outline-brand"
+                error={field.state.meta.errors[0] ? String(field.state.meta.errors[0]) : undefined}
               />
-              {field.state.meta.errors.map((err) => (
-                <p key={String(err)} className="text-xs text-error">
-                  {String(err)}
-                </p>
-              ))}
-            </div>
-          )}
-        </form.Field>
+            )}
+          </form.Field>
 
-        <form.Field name="forma_pago">
-          {(field) => (
-            <div className="flex flex-col gap-1">
-              <label htmlFor={field.name} className="text-sm font-medium text-gray-700">
-                Forma de pago
-              </label>
-              <select
+          <form.Field name="forma_pago">
+            {(field) => (
+              <Select
                 id={field.name}
+                label="Forma de pago"
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value as FormaPago)}
-                className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-2 focus:outline-brand"
               >
                 <option value="EFECTIVO">Efectivo</option>
                 <option value="TRANSFERENCIA">Transferencia</option>
-              </select>
-            </div>
-          )}
-        </form.Field>
+              </Select>
+            )}
+          </form.Field>
 
-        <form.Field name="notas">
-          {(field) => (
-            <div className="flex flex-col gap-1">
-              <label htmlFor={field.name} className="text-sm font-medium text-gray-700">
-                Notas (opcional)
-              </label>
-              <textarea
+          <form.Field name="notas">
+            {(field) => (
+              <Textarea
                 id={field.name}
+                label="Notas (opcional)"
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
-                className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-2 focus:outline-brand"
                 rows={3}
               />
-            </div>
-          )}
-        </form.Field>
+            )}
+          </form.Field>
 
-        <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-          <span className="font-semibold">Total</span>
-          <span className="text-lg font-bold text-brand">${total.toLocaleString('es-AR')}</span>
-        </div>
+          <div className="flex items-center justify-between border-t border-gray-200 pt-4">
+            <span className="font-semibold">Total</span>
+            <span className="text-lg font-bold text-brand">${total.toLocaleString('es-AR')}</span>
+          </div>
 
-        {crearPedido.isError && <p className="text-sm text-error">{handleApiError(crearPedido.error)}</p>}
+          {crearPedido.isError && <p className="text-sm text-error">{handleApiError(crearPedido.error)}</p>}
 
-        <Button type="submit" disabled={crearPedido.isPending}>
-          {crearPedido.isPending ? 'Confirmando...' : 'Confirmar pedido'}
-        </Button>
-      </form>
+          <Button type="submit" disabled={crearPedido.isPending}>
+            {crearPedido.isPending ? 'Confirmando...' : 'Confirmar pedido'}
+          </Button>
+        </form>
+      </Card>
     </div>
   )
 }

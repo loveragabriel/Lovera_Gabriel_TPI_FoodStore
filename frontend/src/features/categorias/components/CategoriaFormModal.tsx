@@ -3,7 +3,9 @@ import { useState } from 'react'
 
 import { handleApiError } from '@/shared/api/handleApiError'
 import { Button } from '@/shared/ui/Button'
+import { Input } from '@/shared/ui/Input'
 import { Modal } from '@/shared/ui/Modal'
+import { Textarea } from '@/shared/ui/Textarea'
 
 import type { Categoria, CategoriaInput } from '../types/categoria.types'
 
@@ -53,40 +55,26 @@ export function CategoriaFormModal({ open, categoria, onClose, onSubmit }: Categ
           }}
         >
           {(field) => (
-            <div className="flex flex-col gap-1">
-              <label htmlFor={field.name} className="text-sm font-medium text-gray-700">
-                Nombre
-              </label>
-              <input
-                id={field.name}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-                className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-2 focus:outline-brand"
-              />
-              {field.state.meta.errors.map((err) => (
-                <p key={String(err)} className="text-xs text-error">
-                  {String(err)}
-                </p>
-              ))}
-            </div>
+            <Input
+              id={field.name}
+              label="Nombre"
+              value={field.state.value}
+              onBlur={field.handleBlur}
+              onChange={(e) => field.handleChange(e.target.value)}
+              error={field.state.meta.errors[0] ? String(field.state.meta.errors[0]) : undefined}
+            />
           )}
         </form.Field>
 
         <form.Field name="descripcion">
           {(field) => (
-            <div className="flex flex-col gap-1">
-              <label htmlFor={field.name} className="text-sm font-medium text-gray-700">
-                Descripcion
-              </label>
-              <textarea
-                id={field.name}
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                rows={3}
-                className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-2 focus:outline-brand"
-              />
-            </div>
+            <Textarea
+              id={field.name}
+              label="Descripcion"
+              value={field.state.value}
+              onChange={(e) => field.handleChange(e.target.value)}
+              rows={3}
+            />
           )}
         </form.Field>
 

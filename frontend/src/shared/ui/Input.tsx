@@ -3,11 +3,12 @@ import type { InputHTMLAttributes } from 'react'
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string
   error?: string
+  wrapperClassName?: string
 }
 
-export function Input({ label, error, id, className = '', ...props }: InputProps) {
+export function Input({ label, error, id, className = '', wrapperClassName = '', ...props }: InputProps) {
   return (
-    <div className="flex flex-col gap-1">
+    <div className={`flex flex-col gap-1 ${wrapperClassName}`}>
       {label && (
         <label htmlFor={id} className="text-sm font-medium text-gray-700">
           {label}

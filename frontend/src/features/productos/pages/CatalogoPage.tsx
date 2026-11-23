@@ -5,6 +5,8 @@ import { EstadoError } from '@/shared/components/EstadoError'
 import { EstadoVacio } from '@/shared/components/EstadoVacio'
 import { Paginacion } from '@/shared/components/Paginacion'
 import { Skeleton } from '@/shared/components/Skeleton'
+import { Input } from '@/shared/ui/Input'
+import { Select } from '@/shared/ui/Select'
 
 import { ProductoCard } from '../components/ProductoCard'
 import { useProductos } from '../hooks/useProductos'
@@ -31,22 +33,21 @@ export function CatalogoPage() {
       <h1 className="text-2xl font-bold text-gray-900">Catalogo</h1>
 
       <div className="flex flex-col gap-3 sm:flex-row">
-        <input
+        <Input
+          wrapperClassName="flex-1"
           value={search}
           onChange={(e) => {
             setSearch(e.target.value)
             setPagina(1)
           }}
           placeholder="Buscar productos..."
-          className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-2 focus:outline-brand"
         />
-        <select
+        <Select
           value={categoriaId ?? ''}
           onChange={(e) => {
             setCategoriaId(e.target.value ? Number(e.target.value) : undefined)
             setPagina(1)
           }}
-          className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-2 focus:outline-brand"
         >
           <option value="">Todas las categorias</option>
           {categorias?.map((categoria) => (
@@ -54,7 +55,7 @@ export function CatalogoPage() {
               {categoria.nombre}
             </option>
           ))}
-        </select>
+        </Select>
       </div>
 
       {isLoading && (

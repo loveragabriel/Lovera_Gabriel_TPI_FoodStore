@@ -22,15 +22,13 @@ export function Navbar() {
         </Link>
 
         <div className="flex flex-wrap items-center gap-6 text-sm">
+          <Link to="/" className="text-gray-700 hover:text-brand">
+            Catalogo
+          </Link>
           {usuario?.role !== 'admin' && (
-            <>
-              <Link to="/" className="text-gray-700 hover:text-brand">
-                Catalogo
-              </Link>
-              <Link to="/carrito" className="text-gray-700 hover:text-brand">
-                Carrito{cantidadCarrito > 0 && ` (${cantidadCarrito})`}
-              </Link>
-            </>
+            <Link to="/carrito" className="text-gray-700 hover:text-brand">
+              Carrito{cantidadCarrito > 0 && ` (${cantidadCarrito})`}
+            </Link>
           )}
 
           {usuario ? (

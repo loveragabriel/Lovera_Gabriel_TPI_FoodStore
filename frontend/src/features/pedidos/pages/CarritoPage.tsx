@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 
+import { useProductos } from '@/features/productos/hooks/useProductos'
 import { EstadoVacio } from '@/shared/components/EstadoVacio'
 import { Button } from '@/shared/ui/Button'
 import { useCartStore } from '@/store/cartStore'
@@ -10,6 +11,9 @@ export function CarritoPage() {
   const quitar = useCartStore((s) => s.quitar)
   const total = useCartStore((s) => s.total())
   const navigate = useNavigate()
+
+  const { data: productos } = useProductos({ skip: 0, limit: 100 })
+  const stockPorProducto = new Map(productos?.items.map((p) => [p.id, p.stock]) ?? [])
 
   if (items.length === 0) {
     return (
@@ -28,33 +32,46 @@ export function CarritoPage() {
       <h1 className="text-2xl font-bold text-gray-900">Carrito</h1>
 
       <div className="divide-y divide-gray-200 rounded-xl border border-gray-200 bg-white">
-        {items.map((item) => (
-          <div key={item.producto_id} className="flex flex-wrap items-center justify-between gap-4 p-4">
-            <div>
-              <p className="font-medium text-gray-900">{item.nombre}</p>
-              <p className="text-sm text-gray-500">${item.precio_unitario.toLocaleString('es-AR')} c/u</p>
+        {items.map((item) => {
+          const stockDisponible = stockPorProducto.get(item.producto_id)
+          const alcanzoElLimite = stockDisponible !== undefined && item.cantidad >= stockDisponible
+
+          return (
+            <div key={item.producto_id} className="flex flex-wrap items-center justify-between gap-4 p-4">
+              <div>
+                <p className="font-medium text-gray-900">{item.nombre}</p>
+                <p className="text-sm text-gray-500">${item.precio_unitario.toLocaleString('es-AR')} c/u</p>
+                {alcanzoElLimite && <p className="text-xs text-gray-500">Maximo stock disponible</p>}
+              </div>
+              <div className="flex items-center gap-3">
+                <input
+                  type="number"
+                  min={1}
+                  max={stockDisponible}
+                  value={item.cantidad}
+                  onChange={(e) => {
+                    const cantidad = Number(e.target.value)
+                    cambiarCantidad(
+                      item.producto_id,
+                      stockDisponible !== undefined ? Math.min(cantidad, stockDisponible) : cantidad,
+                    )
+                  }}
+                  className="w-16 rounded-lg border border-gray-300 px-2 py-1 text-center text-sm"
+                />
+                <span className="w-24 text-right font-semibold">
+                  ${(item.precio_unitario * item.cantidad).toLocaleString('es-AR')}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => quitar(item.producto_id)}
+                  className="cursor-pointer text-sm text-error hover:underline"
+                >
+                  Quitar
+                </button>
+              </div>
             </div>
-            <div className="flex items-center gap-3">
-              <input
-                type="number"
-                min={1}
-                value={item.cantidad}
-                onChange={(e) => cambiarCantidad(item.producto_id, Number(e.target.value))}
-                className="w-16 rounded-lg border border-gray-300 px-2 py-1 text-center text-sm"
-              />
-              <span className="w-24 text-right font-semibold">
-                ${(item.precio_unitario * item.cantidad).toLocaleString('es-AR')}
-              </span>
-              <button
-                type="button"
-                onClick={() => quitar(item.producto_id)}
-                className="cursor-pointer text-sm text-error hover:underline"
-              >
-                Quitar
-              </button>
-            </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
 
       <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-white p-4">

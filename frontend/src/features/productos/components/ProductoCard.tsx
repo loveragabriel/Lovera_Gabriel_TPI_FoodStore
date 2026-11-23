@@ -5,8 +5,12 @@ import type { Producto } from '../types/producto.types'
 
 export function ProductoCard({ producto }: { producto: Producto }) {
   const agregar = useCartStore((s) => s.agregar)
+  const cantidadEnCarrito = useCartStore(
+    (s) => s.items.find((i) => i.producto_id === producto.id)?.cantidad ?? 0,
+  )
 
   const sinStock = !producto.disponible || producto.stock <= 0
+  const alcanzoElLimite = !sinStock && cantidadEnCarrito >= producto.stock
 
   return (
     <div className="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition duration-200 hover:scale-[1.02] hover:shadow-lg">
@@ -22,7 +26,7 @@ export function ProductoCard({ producto }: { producto: Producto }) {
         <div className="mt-auto flex items-center justify-between pt-2">
           <span className="text-lg font-bold text-brand">${producto.precio_base.toLocaleString('es-AR')}</span>
           <Button
-            disabled={sinStock}
+            disabled={sinStock || alcanzoElLimite}
             onClick={() =>
               agregar({
                 producto_id: producto.id,
@@ -31,7 +35,7 @@ export function ProductoCard({ producto }: { producto: Producto }) {
               })
             }
           >
-            {sinStock ? 'Sin stock' : 'Agregar'}
+            {sinStock ? 'Sin stock' : alcanzoElLimite ? 'Maximo en carrito' : 'Agregar'}
           </Button>
         </div>
       </div>

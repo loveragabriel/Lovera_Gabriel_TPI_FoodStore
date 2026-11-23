@@ -7,6 +7,7 @@ import { handleApiError } from '@/shared/api/handleApiError'
 import { Button } from '@/shared/ui/Button'
 import { Card } from '@/shared/ui/Card'
 import { Input } from '@/shared/ui/Input'
+import { useAuthStore } from '@/store/authStore'
 
 interface RegisterFormValues {
   username: string
@@ -24,6 +25,7 @@ const defaultValues: RegisterFormValues = {
 
 export function RegisterPage() {
   const navigate = useNavigate()
+  const login = useAuthStore((s) => s.login)
   const [error, setError] = useState<string | null>(null)
 
   const form = useForm({
@@ -32,7 +34,8 @@ export function RegisterPage() {
       setError(null)
       try {
         await register(value)
-        navigate('/login')
+        await login(value.username, value.password)
+        navigate('/', { replace: true })
       } catch (e) {
         setError(handleApiError(e))
       }

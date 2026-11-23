@@ -4,3 +4,8 @@ export interface Categoria {
   descripcion: string | null
   activo: boolean
 }
+
+export interface CategoriaInput {
+  nombre: string
+  descripcion?: string
+}

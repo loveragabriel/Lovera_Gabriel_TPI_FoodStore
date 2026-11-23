@@ -22,18 +22,24 @@ export function Navbar() {
         </Link>
 
         <div className="flex flex-wrap items-center gap-6 text-sm">
-          <Link to="/" className="text-gray-700 hover:text-brand">
-            Catalogo
-          </Link>
-          <Link to="/carrito" className="text-gray-700 hover:text-brand">
-            Carrito{cantidadCarrito > 0 && ` (${cantidadCarrito})`}
-          </Link>
+          {usuario?.role !== 'admin' && (
+            <>
+              <Link to="/" className="text-gray-700 hover:text-brand">
+                Catalogo
+              </Link>
+              <Link to="/carrito" className="text-gray-700 hover:text-brand">
+                Carrito{cantidadCarrito > 0 && ` (${cantidadCarrito})`}
+              </Link>
+            </>
+          )}
 
           {usuario ? (
             <>
-              <Link to="/mis-pedidos" className="text-gray-700 hover:text-brand">
-                Mis pedidos
-              </Link>
+              {usuario.role !== 'admin' && (
+                <Link to="/mis-pedidos" className="text-gray-700 hover:text-brand">
+                  Mis pedidos
+                </Link>
+              )}
               {usuario.role === 'admin' && (
                 <span className="rounded-full bg-brand/10 px-2 py-0.5 text-xs font-semibold text-brand">
                   Admin

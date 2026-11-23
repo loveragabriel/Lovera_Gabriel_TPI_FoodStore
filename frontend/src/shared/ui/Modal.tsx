@@ -18,7 +18,7 @@ export function Modal({ open, title, onClose, children }: ModalProps) {
           <button
             type="button"
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            className="cursor-pointer text-gray-400 hover:text-gray-600"
             aria-label="Cerrar"
           >
             ✕

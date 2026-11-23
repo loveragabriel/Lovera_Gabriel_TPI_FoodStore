@@ -157,7 +157,7 @@ export function ProductoFormModal({ open, producto, onClose, onSubmit }: Product
 
         <form.Field name="disponible">
           {(field) => (
-            <label className="flex items-center gap-2 text-sm text-gray-700">
+            <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-700">
               <input
                 type="checkbox"
                 checked={field.state.value}

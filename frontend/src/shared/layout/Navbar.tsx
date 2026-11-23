@@ -35,7 +35,11 @@ export function Navbar() {
                 Mis pedidos
               </Link>
               <span className="text-gray-500">{usuario.full_name}</span>
-              <button type="button" onClick={handleLogout} className="text-gray-700 hover:text-brand">
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="cursor-pointer text-gray-700 hover:text-brand"
+              >
                 Cerrar sesion
               </button>
             </>

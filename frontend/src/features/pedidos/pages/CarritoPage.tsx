@@ -48,7 +48,7 @@ export function CarritoPage() {
               <button
                 type="button"
                 onClick={() => quitar(item.producto_id)}
-                className="text-sm text-error hover:underline"
+                className="cursor-pointer text-sm text-error hover:underline"
               >
                 Quitar
               </button>

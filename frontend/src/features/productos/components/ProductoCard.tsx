@@ -9,8 +9,8 @@ export function ProductoCard({ producto }: { producto: Producto }) {
   const sinStock = !producto.disponible || producto.stock <= 0
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-      <div className="aspect-video w-full bg-gray-100">
+    <div className="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition duration-200 hover:scale-[1.02] hover:shadow-lg">
+      <div className="aspect-square w-full bg-gray-100">
         {producto.imagen_url && (
           <img src={producto.imagen_url} alt={producto.nombre} className="h-full w-full object-cover" />
         )}

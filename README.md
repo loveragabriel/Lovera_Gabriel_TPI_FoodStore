@@ -6,6 +6,8 @@ El TP se basa en una aplicación web para un negocio de comidas e integrar backe
 
 Repositorio: https://github.com/loveragabriel/Lovera_Gabriel_TPI_FoodStore
 
+Video de demostración: https://1drv.ms/u/c/8394B6D778ABDB6A/AYewBbjHtLhGlLUaehosrEI?e=NLnUhF
+
 ## Requisitos
 
 - Python 3.11 a 3.13
